@@ -1,6 +1,6 @@
 import express from 'express';
 import * as trackController from '../controllers/tracksController';
-import { validateTrackId, validateCreateTrack } from '../middleware/errorHandler';
+import {validateCreateTrack, validateUUId} from '../middleware/errorHandler';
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.post('/', validateCreateTrack, trackController.createTrack);
 router
   .route('/:id')
   .get(trackController.getTrackById)
-  .put(validateTrackId, trackController.updateTrack)
-  .delete(validateTrackId, trackController.deleteTrack);
+  .put(validateUUId, trackController.updateTrack)
+  .delete(validateUUId, trackController.deleteTrack);
 
 export default router;

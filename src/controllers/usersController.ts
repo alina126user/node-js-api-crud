@@ -62,7 +62,7 @@ export const deleteUser =  (req: Request<{id: string}>, res: Response, next: Nex
       if (!user) {
       return res.status(404).json({ message: "User not found" });
       }
-    res.status(204)
+    res.status(204).send();
   } catch (error) {
     next(error);
   }

@@ -18,7 +18,7 @@ export const validateCreateUser = (req: Request,
   next();
 };
 
-export const validateUserId = (
+export const validateUUId = (
   req: Request<{ id: string }>,
   res: Response,
   next: NextFunction
@@ -32,27 +32,12 @@ export const validateUserId = (
   next();
 };
 
-export const validateTrackId = (
-  req: Request<{ id: string }>,
-  res: Response,
-  next: NextFunction
-) => {
-  if (!isUuid(req.params.id)) {
-    return res.status(400).json({
-      message: "Invalid trackId. It must be a valid UUID",
-    });
-  }
-
-  next();
-};
-
 export const validateCreateTrack = (req: Request,
   res: Response,
   next: NextFunction) => {
   const { name, duration } = req.body;
 
   if (
-
     !name ||
     !duration ||
     typeof name !== 'string' ||
@@ -61,5 +46,39 @@ export const validateCreateTrack = (req: Request,
     return res.status(400).json({ message: 'Invalid body' });
   }
 
+  next();
+};
+
+export const validateArtistCreation = (
+    req: Request,
+    res: Response,
+    next: NextFunction)=> {
+  const { name, grammy } = req.body;
+
+  if(
+      !name ||
+      !grammy ||
+      typeof name !== 'string' ||
+      typeof grammy !== 'boolean'
+  ) {
+    return res.status(400).json({message: 'Invalid body!'})
+  }
+  next();
+};
+
+export const validateAlbumCreation = (
+    req: Request,
+    res: Response,
+    next: NextFunction)=> {
+  const { name, year } = req.body;
+
+  if(
+      !name ||
+      !year ||
+      typeof name !== 'string' ||
+      typeof year !== 'number'
+  ) {
+    return res.status(400).json({message: 'Invalid body!'})
+  }
   next();
 };

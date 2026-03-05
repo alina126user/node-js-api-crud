@@ -1,15 +1,17 @@
 import express from 'express';
+import * as albumsController from '../controllers/albumsController';
+import { validateAlbumCreation, validateUUId } from "../middleware/errorHandler";
 
 const router = express.Router();
 
-router.get('/', );
+router.get('/', albumsController.getAllAlbums);
 
-router.post('/', );
+router.post('/', validateAlbumCreation, albumsController.createAlbum);
 
 router
   .route('/:id')
-  .get()
-  .put()
-  .delete();
+  .get(albumsController.getAlbumById)
+  .put(validateUUId, albumsController.updateAlbum)
+  .delete(validateUUId, albumsController.deleteAlbum);
 
 export default router;
