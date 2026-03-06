@@ -1,6 +1,9 @@
 import {Artist, CreateArtistDto} from "../interfaces/artist.type";
 import {artists} from "../data/artists.data";
 import {v4 as uuid} from "uuid";
+import {favorites} from "../data/favorites.data";
+import {albums} from "../data/albums.data";
+import {tracks} from "../data/track.data";
 
 export class ArtistsService {
     getAllArtists(): Artist[] {
@@ -36,6 +39,16 @@ export class ArtistsService {
         if (index === -1) return false;
 
         artists.splice(index, 1);
+
+        favorites.artists = favorites.artists.filter(aid => aid !== id);
+
+        albums.forEach(a => {
+            if (a.artistId === id) a.artistId = null;
+        });
+
+        tracks.forEach(t => {
+            if (t.artistId === id) t.artistId = null;
+        });
 
         return true
     }

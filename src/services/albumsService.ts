@@ -1,6 +1,8 @@
 import { Album, CreateAlbumDto } from "../interfaces/album.type";
 import { albums } from "../data/albums.data";
 import {v4 as uuid} from "uuid";
+import {favorites} from "../data/favorites.data";
+import {tracks} from "../data/track.data";
 
 
 export class AlbumsService {
@@ -40,6 +42,12 @@ export class AlbumsService {
         if (index === -1) return false;
 
         albums.splice(index, 1);
+
+        tracks.forEach(t => {
+                if (t.albumId === id) t.albumId = null;
+        });
+
+        favorites.albums = favorites.albums.filter(aid => aid !== id);
 
         return true
     }

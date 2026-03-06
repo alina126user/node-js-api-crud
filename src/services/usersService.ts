@@ -1,5 +1,5 @@
 import { users } from '../data/users.data';
-import { User } from '../interfaces/user.type';
+import {User, UserResponse} from '../interfaces/user.type';
 import { v4 as uuid } from 'uuid';
 import { CreateUserDto, UpdatePasswordDto } from '../interfaces/user.type';
 
@@ -12,29 +12,32 @@ export class UsersService {
     return users.find((user) => user.id === id);
   }
 
-  createUser(dto: CreateUserDto): User {
+  createUser(dto: CreateUserDto): UserResponse {
     const newUser = {
       id: uuid(),
       createdAt: new Date().getTime(),
       ...dto,
     };
 
+    const { password, ...userWithoutPassword } = newUser;
     users.push(newUser);
-    return newUser;
+    return userWithoutPassword;
   }
 
-updateUser(id: string, dto: UpdatePasswordDto): User | null {
-  const user = users.find((u) => u.id === id);
-  if (!user) return null;
+  updateUser(id: string, dto: UpdatePasswordDto): UserResponse | null {
+    const user = users.find((u) => u.id === id);
+    if (!user) return null;
 
-  if (user.password !== dto.oldPassword) {
-    throw new Error("Old password is incorrect");
+    if (user.password !== dto.oldPassword) {
+      throw new Error("Old password is incorrect");
+    }
+
+    user.password = dto.newPassword;
+
+    const { password, ...userWithoutPassword } = user;
+
+    return userWithoutPassword;
   }
-
-  user.password = dto.newPassword;
-
-  return user;
-}
 
   deleteUser(id: string): boolean {
     const index = users.findIndex((u) => u.id === id);
